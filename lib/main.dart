@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+
 import './telas/Login.dart';
+import './telas/Cadastro.dart';
+import './telas/Home.dart';
+import './telas/Reservas.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 
   var login = Login();
+  var cadastro = Cadastro();
+  var home = Home();
+  var reservas = Reservas();
 
   // This widget is the root of your application.
   @override
@@ -26,7 +33,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/': (context) => login 
+        '/': (context) => login ,
+        '/cadastro': (context) => cadastro,
+        '/home': (context) => home,
+        '/reservas': (context) => reservas
       }
     );
   }

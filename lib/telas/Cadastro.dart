@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 
 // Define a custom Form widget.
-class Login extends StatefulWidget {
+class Cadastro extends StatefulWidget {
   @override
   _MyCustomFormState createState() => _MyCustomFormState();
 }
 
 // Define a corresponding State class.
 // This class holds the data related to the Form.
-class _MyCustomFormState extends State<Login> {
+class _MyCustomFormState extends State<Cadastro> {
 
-  final myController = TextEditingController(text: 'test4567@example.com');
-  final myController2 = TextEditingController(text: 'password');
+  final login = TextEditingController(text: 'test4567@example.com');
+  final senha = TextEditingController(text: 'password');
 
   getReq(){
     print('linda função');
-
-    Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override
@@ -42,13 +40,19 @@ class _MyCustomFormState extends State<Login> {
               color: Colors.blue,
               child: Padding(
                 padding: const EdgeInsets.all(0),
-                child: 
-                Center( child: Icon(Icons.add_shopping_cart, size: 54, color: Colors.lightGreen)
+                child:
+                
+Center( child: 
+                          Icon(Icons.add_shopping_cart, size: 54, color: Colors.lightGreen)),
+                        
+
+
+                
                 ),
                 ),
               ),
-            ),
-          
+            
+
           //
           // Form
           //
@@ -60,7 +64,7 @@ class _MyCustomFormState extends State<Login> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
-                      controller: myController,
+                      controller: login,
                       obscureText: false,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -75,7 +79,7 @@ class _MyCustomFormState extends State<Login> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
-                      controller: myController2,
+                      controller: senha,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -84,6 +88,21 @@ class _MyCustomFormState extends State<Login> {
                           ),
                         ),
                         labelText: 'Senha',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: senha,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(50.0),
+                          ),
+                        ),
+                        labelText: 'Confirme sua senha',
                       ),
                     ),
                   ),
@@ -96,7 +115,7 @@ class _MyCustomFormState extends State<Login> {
                       
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 25),
-                        child: Text('Login',
+                        child: Text('Registrar',
                             style:
                                 TextStyle(fontSize: 20, color: Colors.white)),
                       
@@ -109,22 +128,21 @@ class _MyCustomFormState extends State<Login> {
           // Form
           //
 
-          Padding(
+          
             // margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-            padding: const EdgeInsets.only(bottom: 30.0),
-            child: RaisedButton(
+            
+            RaisedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/cadastro');
+                Navigator.pushNamed(context, '/');
               },
               color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              
                 child: Text(
-                    'Ainda não tem uma conta? Clique aqui para registrar-se',
+                    'Ja sou cadastrado',
                     style: TextStyle(fontSize: 10)),
-              ),
+              
             ),
-          ),
+          
 
           // ÍCONES SOCIAIS
 
