@@ -9,8 +9,8 @@ class Reservas extends StatefulWidget {
 class ReservasState extends State<Reservas> {
   @override
   Widget build(BuildContext context) {
-    final items = List<String>.generate(40, (i) => "Item $i");
-    final title = 'Items Disponíveis';
+    final items = List<String>.generate(5, (i) => "Item $i");
+    final title = 'Items Reservados';
 
     final white = Colors.white;
     final black = Colors.blue;
@@ -23,7 +23,7 @@ class ReservasState extends State<Reservas> {
           builder: (context) {
             return AlertDialog(
                 title: Text('$item'),
-                content: Text('Deseja reservar $item?'),
+                content: Text('Deseja cancelar a \nreserva do $item?'),
                 actions: <Widget>[
                   FlatButton(
                     onPressed: () =>  Navigator.pop(context),
@@ -53,12 +53,19 @@ class ReservasState extends State<Reservas> {
             child: Text('Olá *usuário*'),
           ),
           ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Home'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/home'),
+          ),
+          ListTile(
             leading: Icon(Icons.shopping_basket),
             title: Text('Itens reservados'),
+            onTap: () =>  Navigator.pop(context),
           ),
           ListTile(
             leading: Icon(Icons.store),
             title: Text('Lojas próximas'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/lojas'),
           ),
           ListTile(
             leading: Icon(Icons.star),

@@ -38,12 +38,15 @@ class _MyCustomFormState extends State<Login> {
               height: MediaQuery.of(context).size.height / 4,
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.topCenter,
+              margin: EdgeInsets.only(top: 31),
               // padding: new EdgeInsets.all(2.0),
               color: Colors.blue,
               child: Padding(
                 padding: const EdgeInsets.all(0),
                 child: 
-                Center( child: Icon(Icons.add_shopping_cart, size: 54, color: Colors.lightGreen)
+                Center( child: 
+                  // Icon(Icons.add_shopping_cart, size: 54, color: Colors.lightGreen)
+                  Image.network('https://dynamic.brandcrowd.com/asset/logo/3cfe80ae-f9a9-4bfd-ad83-3fb9950b560d/logo?v=4&text=go+cart')
                 ),
                 ),
               ),

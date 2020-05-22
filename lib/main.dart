@@ -4,6 +4,8 @@ import './telas/Login.dart';
 import './telas/Cadastro.dart';
 import './telas/Home.dart';
 import './telas/Reservas.dart';
+import './telas/Lojas.dart';
+import './telas/Loja.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +15,8 @@ class MyApp extends StatelessWidget {
   var cadastro = Cadastro();
   var home = Home();
   var reservas = Reservas();
+  var lojas = Lojas();
+  var loja = Loja();
 
   // This widget is the root of your application.
   @override
@@ -27,7 +31,7 @@ class MyApp extends StatelessWidget {
         // application has a blue toolbar. Then, without quitting the app, try
         // changing the primarySwatch below to Colors.green and then invoke
         // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // or simply save your changes to "hot reload" in a Flutter IDE).,
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
@@ -36,7 +40,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => login ,
         '/cadastro': (context) => cadastro,
         '/home': (context) => home,
-        '/reservas': (context) => reservas
+        '/reservas': (context) => reservas,
+        '/lojas': (context) => lojas,
+        '/loja': (context) => loja
       }
     );
   }

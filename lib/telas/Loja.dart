@@ -1,19 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
+import './Lojas.dart';
+
+class Loja extends StatefulWidget {
   @override
-  HomeState createState() => HomeState();
+  LojaState createState() => LojaState();
 }
 
-class HomeState extends State<Home> {
+class LojaState extends State<Loja> {
   @override
   Widget build(BuildContext context) {
+
+    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
+
     final items = List<String>.generate(40, (i) => "Item $i");
-    final title = 'Items Disponíveis';
+    // final title = ags.title;
 
     final white = Colors.white;
     final black = Colors.blue;
+
+
+    print(args);
 
     modalItem(item) {
       print(item);
@@ -83,14 +91,15 @@ class HomeState extends State<Home> {
 
     return Scaffold(
       backgroundColor: Colors.white70,
-      drawer: drawer,
+      // drawer: drawer,
       appBar: AppBar(
-        title: Text(title),
+        title: Text(args.title),
       ),
       body: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
           return Container(
+
               constraints: BoxConstraints(),
               margin: EdgeInsets.only(top: 15, left: 10, right: 10),
               color: white,
@@ -116,3 +125,5 @@ class HomeState extends State<Home> {
     );
   }
 }
+
+

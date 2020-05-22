@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_cart/recursos/Api.dart';
+import 'package:http/http.dart' as http;
 
 // Define a custom Form widget.
 class Cadastro extends StatefulWidget {
@@ -9,186 +13,237 @@ class Cadastro extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds the data related to the Form.
 class _MyCustomFormState extends State<Cadastro> {
-
+  final user = TextEditingController(text: 'testeUser');
   final login = TextEditingController(text: 'test4567@example.com');
   final senha = TextEditingController(text: 'password');
 
-  getReq(){
+  bool loading = false;
+
+    // loadingWidge
+
+  getReq() async {
+    loadingWidget();
+    print('url');
+    print('${host}signup');
+
+    Map jsao = {'name': user.text, 'email': login.text, 'password': senha.text};
+
+    var data = jsonEncode(jsao);
+
+    print('data');
+    print(data);
+
+    var post = http.post(
+      Uri.encodeFull("${host}signup"),
+      headers: {"Content-Type": "application/json"},
+      body: data,
+    );
+
+    var response = await post;
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
     print('linda função');
+    Navigator.pop(context);
+  }
+
+  loadingWidget(){
+    showDialog(
+          context: context,
+          builder: (context) {
+          return AlertDialog(  
+          content: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white10,
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: Text('Aguarde...', style: TextStyle(fontSize: 23), textAlign: TextAlign.center)),
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: CircularProgressIndicator(                       
+                          backgroundColor: Colors.yellow,
+                          strokeWidth: 12,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ),          
+          );
+          }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Stack(
+        overflow: Overflow.clip,
+        fit: StackFit.expand,
         children: <Widget>[
-          // Padding(
-          //   padding: const EdgeInsets.all(32.0),
-          //   child: Text(
-          //     "E-PROJ",
-          //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42),
-          //   ),
-          // ),
-          Transform.scale(
-            scale: 1,
-            child: Container(
-              height: MediaQuery.of(context).size.height / 4,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.topCenter,
-              // padding: new EdgeInsets.all(2.0),
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(0),
-                child:
-                
-Center( child: 
-                          Icon(Icons.add_shopping_cart, size: 54, color: Colors.lightGreen)),
-                        
+          // loading ?
+          //   loadingWidget();
+          // :
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // Padding(
+              //   padding: const EdgeInsets.all(32.0),
+              //   child: Text(
+              //     "E-PROJ",
+              //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42),
+              //   ),
+              // ),
+              Transform.scale(
+                scale: 1,
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 4,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.topCenter,
+                  margin: EdgeInsets.only(top: 31),
+                  // padding: new EdgeInsets.all(2.0),
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Center(
+                        child:
 
-
-                
-                ),
+                            // Icon(Icons.add_shopping_cart, size: 54, color: Colors.lightGreen)
+                            Image.network(
+                                'https://dynamic.brandcrowd.com/asset/logo/3cfe80ae-f9a9-4bfd-ad83-3fb9950b560d/logo?v=4&text=go+cart')),
+                  ),
                 ),
               ),
-            
 
-          //
-          // Form
-          //
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: login,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(50.0),
+              //
+              // Form
+              //
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          controller: user,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(50.0),
+                              ),
+                            ),
+                            labelText: 'Usuário',
                           ),
                         ),
-                        labelText: 'E-mail',
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: senha,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(50.0),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          controller: login,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(50.0),
+                              ),
+                            ),
+                            labelText: 'E-mail',
                           ),
                         ),
-                        labelText: 'Senha',
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: senha,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(50.0),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          controller: senha,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(50.0),
+                              ),
+                            ),
+                            labelText: 'Senha',
                           ),
                         ),
-                        labelText: 'Confirme sua senha',
                       ),
-                    ),
-                  ),
-                  
-
-                    RaisedButton(
-                      
-                      onPressed: getReq,
-                      color: Colors.blue,
-                      
+                      RaisedButton(
+                        onPressed: getReq,
+                        color: Colors.blue,
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 25),
                         child: Text('Registrar',
                             style:
                                 TextStyle(fontSize: 20, color: Colors.white)),
-                      
-                    ),
+                      ),
+                    ]),
+              ),
 
-                ]),
+              //
+              // Form
+              //
+
+              // margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
+                color: Colors.white,
+                child:
+                    Text('Ja sou cadastrado', style: TextStyle(fontSize: 10)),
+              ),
+
+              // ÍCONES SOCIAIS
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: <Widget>[
+              //     IconButton(
+              //         // Use the FontAwesomeIcons class for the IconData
+              //         icon: new Icon(FontAwesomeIcons.googlePlus),
+              //         onPressed: () {
+              //           print("Pressed");
+              //           return showDialog(
+              //             context: context,
+              //             builder: (context) {
+              //               return AlertDialog(
+              //                 // Retrieve the text the that user has entered by using the
+              //                 // TextEditingController.
+              //                 content: Text("Funcionalidade em Desenvolvimento"),
+              //               );
+              //             },
+              //           );
+              //         }),
+              //     IconButton(
+              //         // Use the FontAwesomeIcons class for the IconData
+              //         icon: new Icon(FontAwesomeIcons.facebook),
+              //         onPressed: () {
+              //           return showDialog(
+              //             context: context,
+              //             builder: (context) {
+              //               return AlertDialog(
+              //                 // Retrieve the text the that user has entered by using the
+              //                 // TextEditingController.
+              //                 content: Text("Funcionalidade em Desenvolvimento"),
+              //               );
+              //             },
+              //           );
+              //         })
+              //   ],
+              // )
+            ],
           ),
-
-          //
-          // Form
-          //
-
-          
-            // margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-            
-            RaisedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/');
-              },
-              color: Colors.white,
-              
-                child: Text(
-                    'Ja sou cadastrado',
-                    style: TextStyle(fontSize: 10)),
-              
-            ),
-          
-
-          // ÍCONES SOCIAIS
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //   children: <Widget>[
-          //     IconButton(
-          //         // Use the FontAwesomeIcons class for the IconData
-          //         icon: new Icon(FontAwesomeIcons.googlePlus),
-          //         onPressed: () {
-          //           print("Pressed");
-          //           return showDialog(
-          //             context: context,
-          //             builder: (context) {
-          //               return AlertDialog(
-          //                 // Retrieve the text the that user has entered by using the
-          //                 // TextEditingController.
-          //                 content: Text("Funcionalidade em Desenvolvimento"),
-          //               );
-          //             },
-          //           );
-          //         }),
-          //     IconButton(
-          //         // Use the FontAwesomeIcons class for the IconData
-          //         icon: new Icon(FontAwesomeIcons.facebook),
-          //         onPressed: () {
-          //           return showDialog(
-          //             context: context,
-          //             builder: (context) {
-          //               return AlertDialog(
-          //                 // Retrieve the text the that user has entered by using the
-          //                 // TextEditingController.
-          //                 content: Text("Funcionalidade em Desenvolvimento"),
-          //               );
-          //             },
-          //           );
-          //         })
-          //   ],
-          // )
-
           // ÍCONES SOCIAIS
         ],
       ),
-      
     );
-
+  }
 }
-}
-

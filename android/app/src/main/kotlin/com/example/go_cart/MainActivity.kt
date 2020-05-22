@@ -1,4 +1,4 @@
-package com.example.go_cart
+package br.com.go_cart
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
