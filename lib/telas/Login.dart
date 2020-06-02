@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:go_cart/recursos/Api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Define a custom Form widget.
 class Login extends StatefulWidget {
@@ -9,14 +14,109 @@ class Login extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds the data related to the Form.
 class _MyCustomFormState extends State<Login> {
+  var sucesso;
+  var erro ;
 
   final myController = TextEditingController(text: 'test4567@example.com');
   final myController2 = TextEditingController(text: 'password');
 
-  getReq(){
-    print('linda função');
+  final user = TextEditingController(text: 'testeUser2');
+  final login = TextEditingController(text: 'test45678@example.com');
+  final senha = TextEditingController(text: 'password123');
 
-    Navigator.pushReplacementNamed(context, '/home');
+
+
+  getReq() async {
+    setState(() {
+      erro = null;
+    });
+    SharedPreferences jwt = await SharedPreferences.getInstance();
+
+    loadingWidget();
+    print('url');
+    print('${host}signin');
+
+    Map jsao = {'email': login.text,  'password': senha.text};
+
+    var data = jsonEncode(jsao);
+
+    print('data');
+    print(data);
+
+    var post = http.post(
+      Uri.encodeFull("${host}signin"),
+      headers: {"Content-Type": "application/json"},
+      body: data,
+    );
+
+    var response = await post;
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    var res = await jsonDecode(response.body);
+
+    if(res['token'] == null){
+      if (res['error'] is String){
+        var r = [''];
+        r[0] = res['error'];
+        setState(() {
+          erro = r;
+        });
+      } else {
+        print('lista');
+        res['error'][0].forEach(( e ) {
+          var r = erro != null ? erro : [''];
+
+          r.add(e['msg']);
+
+          print(e['msg']);
+          setState(() {
+            erro = r;
+          });
+          print(erro);
+        });
+      }
+    } else {      
+      print('sucesso');
+      await jwt.setString('jwt', res['token']);
+    }
+
+    if(res['token'] != null){
+      Navigator.pop(context);
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+  
+  loadingWidget() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Container(
+              height: 250,
+              color: Colors.white10,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                        child: Text('Aguarde...',
+                            style: TextStyle(fontSize: 23),
+                            textAlign: TextAlign.center)),
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.yellow,
+                        strokeWidth: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -52,6 +152,48 @@ class _MyCustomFormState extends State<Login> {
               ),
             ),
           
+erro != null ?
+              Container(
+                color: Colors.red,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 15, right: 15, top:5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Erro!', style: TextStyle(color: Colors.white, fontSize: 23)),
+                          IconButton(
+                            icon: Icon(Icons.close, color: Colors.white,),
+                            onPressed: () {
+                              setState(() {
+                                erro = null;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: 
+                      Wrap(
+                        children: erro.map((element) =>
+                            new Container(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: Text(element, style: TextStyle(color: Colors.white))
+                            ) 
+                        ).toList()
+                      ),
+                    )
+                  ],
+                ),
+              )
+              :
+              Container(),
+
           //
           // Form
           //
